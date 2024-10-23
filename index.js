@@ -2,6 +2,7 @@ import { AccessToken } from "livekit-server-sdk";
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import { log } from "console";
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 const createToken = async (participantName, roomName) => {
+  console.log(participantName, roomName);
   try {
     if (!process.env.LIVEKIT_API_KEY || !process.env.LIVEKIT_API_SECRET) {
       throw new Error("LiveKit API key and secret are required");
@@ -36,7 +38,7 @@ const createToken = async (participantName, roomName) => {
 
     const token = await at.toJwt();
     console.log(token);
-    
+
     console.log("Token generated successfully");
     return token;
   } catch (error) {
@@ -64,9 +66,9 @@ app.get("/getToken", async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      token:token,
-      participantName:participantName,
-      roomName:roomName
+      token: token,
+      participantName: participantName,
+      roomName: roomName,
     });
   } catch (error) {
     console.error("Request error:", error);
